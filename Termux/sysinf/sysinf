@@ -1,0 +1,21 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+echo "System Information Script"
+echo "--------------------------"
+echo "1) Run All"
+echo "2) Network Info"
+echo "3) Software Info"
+echo "4) Hardware Info"
+echo "5) Exit"
+echo ""
+
+read -p "Select an option: " choice
+
+case "$choice" in
+    1) bash $HOME/bin/sysinf/net-inf && bash $HOME/bin/sysinf/software-inf && bash $HOME/bin/sysinf/hardware-inf ;;
+    2) bash $HOME/bin/sysinf/net-inf ;;
+    3) bash $HOME/bin/sysinf/software-inf ;;
+    4) bash $HOME/bin/sysinf/hardware-inf ;;
+    5) echo "Exiting..."; exit 0 ;;
+    *) echo "Invalid option, exiting." ;;
+esac
