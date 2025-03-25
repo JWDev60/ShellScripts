@@ -3,6 +3,19 @@
 # GitHub JSON File URL
 JSON_URL="https://raw.githubusercontent.com/JWDev60/ShellScripts/main/Termux/dependencies.json"
 
+# Function to display progress bar
+show_progress() {
+    local duration=$1
+    local interval=1
+    local progress=0
+    while [ $progress -le 100 ]; do
+        echo -n "#"
+        sleep $interval
+        ((progress+=10))
+    done
+    echo ""
+}
+
 echo "🔍 Fetching dependency list..."
 DEPENDENCIES_JSON=$(curl -s "$JSON_URL")
 
@@ -18,6 +31,6 @@ if ! command -v jq &>/dev/null; then
     pkg install jq -y
 fi
 
-# Extract and install dependencies
+# Extract and display dependencies
 echo "📜 Dependencies to install:"
 echo "$DEPENDENCIES_JSON" | jq -r '.dependencies[] | " -
