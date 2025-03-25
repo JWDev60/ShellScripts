@@ -1,0 +1,14 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+echo "💻 Hardware Information"
+echo "----------------------"
+echo "CPU Info:"
+cat /proc/cpuinfo | grep -E "Processor|Hardware" | uniq
+
+echo ""
+echo "Memory Info:"
+free -h
+
+echo ""
+echo "Storage Info:"
+df -h | grep "/data"
