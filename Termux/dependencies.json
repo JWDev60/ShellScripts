@@ -1,0 +1,32 @@
+{
+  "dependencies": [
+    {
+      "name": "curl",
+      "description": "Command-line tool for downloading files from the web"
+    },
+    {
+      "name": "jq",
+      "description": "JSON parsing tool used in scripts"
+    },
+    {
+      "name": "inetutils",
+      "description": "Networking tools (provides 'ip' command)"
+    },
+    {
+      "name": "coreutils",
+      "description": "Essential system utilities"
+    },
+    {
+      "name": "procps",
+      "description": "System monitoring tools"
+    },
+    {
+      "name": "util-linux",
+      "description": "Additional system utilities"
+    },
+    {
+      "name": "net-tools",
+      "description": "Networking utilities (optional)"
+    }
+  ]
+}
