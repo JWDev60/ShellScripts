@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+echo "🔍 Network Information"
+echo "----------------------"
+ip a | grep 'inet ' | awk '{print "IP Address:", $2}'
+echo "----------------------"
+ping -c 1 8.8.8.8 &>/dev/null && echo "Internet: Connected" || echo "Internet: Disconnected"
