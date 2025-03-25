@@ -13,46 +13,52 @@ if [[ -z "$SCRIPTS_JSON" ]]; then
     exit 1
 fi
 
-# Extract script names
-SCRIPT_NAMES=$(echo "$SCRIPTS_JSON" | jq -r '.scripts | keys[]')
+# Extract script names and descriptions
+SCRIPT_NAMES=()
+SCRIPT_DESCRIPTIONS=()
+SCRIPT_URLS=()
+
+while read -r SCRIPT; do
+    DESCRIPTION=$(echo "$SCRIPTS_JSON" | jq -r --arg key "$SCRIPT" '.scripts[$key].description')
+    URL=$(echo "$SCRIPTS_JSON" | jq -r --arg key "$SCRIPT" '.scripts[$key].install_url')
+
+    SCRIPT_NAMES+=("$SCRIPT")
+    SCRIPT_DESCRIPTIONS+=("$DESCRIPTION")
+    SCRIPT_URLS+=("$URL")
+done < <(echo "$SCRIPTS_JSON" | jq -r '.scripts | keys[]')
 
 echo "📜 Available Scripts:"
 echo "----------------------"
 
 # Display the scripts
-INDEX=1
-declare -A SCRIPT_MAP
-while read -r SCRIPT; do
-    DESC=$(echo "$SCRIPTS_JSON" | jq -r --arg key "$SCRIPT" '.scripts[$key].description')
-    echo "$INDEX) $SCRIPT - $DESC"
-    SCRIPT_MAP[$INDEX]="$SCRIPT"
-    ((INDEX++))
-done <<< "$SCRIPT_NAMES"
+for i in "${!SCRIPT_NAMES[@]}"; do
+    echo "$((i+1))) ${SCRIPT_NAMES[$i]} - ${SCRIPT_DESCRIPTIONS[$i]}"
+done
 
-echo "$INDEX) Exit"
+EXIT_OPTION=$(( ${#SCRIPT_NAMES[@]} + 1 ))
+echo "$EXIT_OPTION) Exit"
 
 # Get user choice
 echo ""
 read -p "Enter the number of the script to install: " CHOICE
 
 # Handle exit
-if [[ "$CHOICE" -eq "$INDEX" ]]; then
+if [[ "$CHOICE" -eq "$EXIT_OPTION" ]]; then
     echo "Exiting..."
     exit 0
 fi
 
 # Validate choice
-SELECTED_SCRIPT=${SCRIPT_MAP[$CHOICE]}
-if [[ -z "$SELECTED_SCRIPT" ]]; then
+if [[ "$CHOICE" -lt 1 || "$CHOICE" -gt "${#SCRIPT_NAMES[@]}" ]]; then
     echo "❌ Invalid selection!"
     exit 1
 fi
 
 # Get installation URL
-INSTALL_URL=$(echo "$SCRIPTS_JSON" | jq -r --arg key "$SELECTED_SCRIPT" '.scripts[$key].install_url')
+INSTALL_URL="${SCRIPT_URLS[$((CHOICE-1))]}"
 
 # Run the installation script
-echo "Installing $SELECTED_SCRIPT..."
+echo "Installing ${SCRIPT_NAMES[$((CHOICE-1))]}..."
 curl -sL "$INSTALL_URL" | bash
 
 echo "✅ Installation completed!"
