@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "Easy Clear (ec)": {
+      "description": "Clears the terminal and lists directories",
+      "install_url": "https://raw.githubusercontent.com/JWDev60/ShellScripts/main/Termux/install-ec.sh"
+    },
+    "System Info (sysinf)": {
+      "description": "Displays system, network, and software information",
+      "install_url": "https://raw.githubusercontent.com/JWDev60/ShellScripts/main/Termux/install-sysinf.sh"
+    }
+  }
+}
