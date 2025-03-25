@@ -2,6 +2,13 @@
 
 echo "🔍 Network Information"
 echo "----------------------"
-ip a | grep 'inet ' | awk '{print "IP Address:", $2}'
+
+# Check if 'ip' command exists
+if command -v ip &>/dev/null; then
+    ip a | grep 'inet ' | awk '{print "IP Address:", $2}'
+else
+    echo "ip command not found. Please install 'inetutils'."
+fi
+
 echo "----------------------"
 ping -c 1 8.8.8.8 &>/dev/null && echo "Internet: Connected" || echo "Internet: Disconnected"
